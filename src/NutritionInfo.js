@@ -1,10 +1,11 @@
 import Grid from '@material-ui/core/Grid';
+import { toTitleCase } from './App.js';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
     gridNutritionWindow: {
       minWidth: '280px',
-      maxWidth: '300px',
+      maxWidth: '280px',
       border: "2px solid black",
       paddingLeft: theme.spacing(1),
       paddingRight: theme.spacing(1),
@@ -17,9 +18,6 @@ const useStyles = makeStyles((theme) => ({
       textAlign: "left",
       padding: "0 0 0 0",
       margin: "0px 1px 0px 1px"
-    },
-    servingInput: {
-      textAlign: "right"
     }
   }));
 
@@ -27,9 +25,7 @@ export const NutritionInfo = (props) => {
     const classes = useStyles();
     if (props.nutritionInfo === undefined 
       || props.nutritionInfo.length === 0) {
-      return(
-        <h1>Beep</h1>
-      );
+      return null;
     }
     else {
       let containsTransFat = props.nutritionInfo.full_nutrients.filter(
@@ -45,10 +41,11 @@ export const NutritionInfo = (props) => {
       } 
       return (
         <Grid container 
-        className={classes.gridNutritionWindow}
-        direction="row">
+        className={classes.gridNutritionWindow}>
           <Grid item className={classes.gridNutritionWindowItem} xs={12}>
-            <h1 style={{borderBottom: "1px solid black", margin: "0 0 0 0", fontSize: "30px"}}>Nutrition Facts</h1>
+            <h1 style={{borderBottom: "1px solid black", margin: "0 0 0 0", fontSize: "30px"}}>
+                {toTitleCase(props.nutritionInfo.food_name)}
+            </h1>
           </Grid>
           <Grid item className={classes.gridNutritionWindowItem} xs={6}>
             <p className={classes.paragraph} style={{fontWeight: "bold"}}>Serving size</p>

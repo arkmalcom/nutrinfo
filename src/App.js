@@ -13,15 +13,27 @@ const styles = theme => ({
   gridMainItem: {
     padding: theme.spacing(1),
   },
+  gridBody: {
+    textAlign: 'center',
+    display: 'flex',
+    justify: 'space-between',
+    alignItems: 'center'
+  },
+  gridBodyItem: {
+    padding: theme.spacing(1)
+  }
 });
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.handleInput.bind(this);
+    this.handleReset.bind(this);
     this.state = {
       input: '',
-      nutritionInfo: []
+      nutritionList: [{
+        nutritionInfo: []
+      }]
     };
   }
 
@@ -30,6 +42,12 @@ class App extends React.Component {
     if(input !== '') {
       this.getNutritionInput(input);
     }
+  }
+
+  handleReset = () => {
+    this.setState({nutritionList: [{
+      nutritionInfo: []
+    }]});
   }
 
   getNutritionInput(input) {
@@ -45,6 +63,7 @@ class App extends React.Component {
         query: input
       })
     };
+    const nutritionList = this.state.nutritionList;
     fetch('https://trackapi.nutritionix.com/v2/natural/nutrients', request)
     .then((res) =>  {
       if(res.status === 404) {
@@ -52,32 +71,53 @@ class App extends React.Component {
       }
       else { return res.json(); }
     })
-    .then((data) => this.setState({ nutritionInfo: data.foods[0] }))
+    .then((data) => this.setState({ nutritionList: nutritionList.concat([{
+      nutritionInfo: data.foods[0]
+      }]) 
+    }))
     .catch(e => console.log(e));
   }
 
     render() {
       const { classes } = this.props;
-      console.log(this.state.nutritionInfo);
+      let nutritionList = this.state.nutritionList;
+      if(
+        nutritionList !== undefined ||
+        nutritionList.length !== 0       
+        ) {
+        console.log(nutritionList);
+        nutritionList = this.state.nutritionList.map((item) =>
+        <Grid item className={classes.gridBodyItem} xs={12} md={4} lg={3} xl={3}>
+          <NutritionInfo nutritionInfo={item.nutritionInfo} />
+        </Grid>
+        ).slice(1);
+      }
+      else {
+        return null;
+      }
       return (
         <Container>
           <Grid container className={classes.gridMain}>
               <Grid item className={classes.gridMainItem} xs={12}>
-                  <SearchBar onHandleInput={this.handleInput} />
-              </Grid>
-              <Grid item className={classes.gridMainItem} xs={12} md={6}>
-                  <NutritionInfo nutritionInfo={this.state.nutritionInfo} />
-              </Grid>
-              <Grid item className={classes.gridMainItem} xs={12} md={6}>
-                <h1>Picture?</h1>
-              </Grid>
-              <Grid item className={classes.gridMainItem} xs={12}>
-                <h1>Total?</h1>
+                  <SearchBar onHandleInput={this.handleInput} onHandleReset={this.handleReset} />
               </Grid>
           </Grid>
+              <Grid container className={classes.gridBody} direction="row">
+                {nutritionList}
+              </Grid>
+
         </Container>
       );
     }
+}
+
+export function toTitleCase(str) {
+  return str.replace(
+    /\w\S*/g,
+    function(txt) {
+      return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+    }
+  );
 }
 
 export default withStyles(styles)(App);
