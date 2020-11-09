@@ -1,20 +1,21 @@
 import React, { Component } from 'react';
 import TextField from '@material-ui/core/TextField';
 import Search from '@material-ui/icons/Search';
-import Delete from '@material-ui/icons/Delete';
+import RotateLeft from '@material-ui/icons/RotateLeft';
 import AddCircleOutline from '@material-ui/icons/AddCircleOutline';
 import IconButton from '@material-ui/core/IconButton';
 import { withStyles } from '@material-ui/core/styles';
 
 const styles = theme => ({
     searchBar: {
-      width: "50%",
+      minWidth: "280px",
+      maxWidth: "280px",
       border: "1px solid black",
       borderRadius: "5px",
     }
   });
 
-class SearchBar extends React.Component {
+class SearchBar extends Component {
   constructor(props) {
     super(props);
     this.handleInput = this.handleInput.bind(this);
@@ -76,7 +77,7 @@ class SearchBar extends React.Component {
               <AddCircleOutline />
             </IconButton>
             <IconButton aria-label="Reset" type="reset">
-              <Delete />
+              <RotateLeft />
             </IconButton>
           </form>
         </div>

@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
     }
   }));
 
-export const NutritionInfo = (props) => {
+export function NutritionInfo(props) {
     const classes = useStyles();
     if (props.nutritionInfo === undefined 
       || props.nutritionInfo.length === 0) {

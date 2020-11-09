@@ -4,6 +4,7 @@ import Grid from '@material-ui/core/Grid';
 import SearchBar from './SearchBar.js';
 import { withStyles } from '@material-ui/core/styles';
 import { NutritionInfo } from './NutritionInfo';
+import { NutritionTotal } from './NutritionTotal';
 
 const styles = theme => ({
   gridMain: {
@@ -24,7 +25,7 @@ const styles = theme => ({
   }
 });
 
-class App extends React.Component {
+class App extends Component {
   constructor(props) {
     super(props);
     this.handleInput.bind(this);
@@ -67,8 +68,8 @@ class App extends React.Component {
     fetch('https://trackapi.nutritionix.com/v2/natural/nutrients', request)
     .then((res) =>  {
       if(res.status === 404) {
-        return Promise.reject('No data found!');
-      }
+        return Promise.reject('No data found!'); 
+        }
       else { return res.json(); }
     })
     .then((data) => this.setState({ nutritionList: nutritionList.concat([{
@@ -85,9 +86,8 @@ class App extends React.Component {
         nutritionList !== undefined ||
         nutritionList.length !== 0       
         ) {
-        console.log(nutritionList);
         nutritionList = this.state.nutritionList.map((item) =>
-        <Grid item className={classes.gridBodyItem} xs={12} md={4} lg={3} xl={3}>
+        <Grid item key={item.nutritionInfo.food_name} className={classes.gridBodyItem} xs={12} md={4} lg={3} xl={3}>
           <NutritionInfo nutritionInfo={item.nutritionInfo} />
         </Grid>
         ).slice(1);
@@ -105,7 +105,9 @@ class App extends React.Component {
               <Grid container className={classes.gridBody} direction="row">
                 {nutritionList}
               </Grid>
-
+              <Grid container className={classes.gridBody} direction="row">
+                <NutritionTotal nutritionTotal={this.state.nutritionList.slice(1)} />
+              </Grid>
         </Container>
       );
     }
