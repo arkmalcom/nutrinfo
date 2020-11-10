@@ -3,26 +3,32 @@ import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import SearchBar from './SearchBar.js';
 import { withStyles } from '@material-ui/core/styles';
+import { ThemeProvider } from '@material-ui/core/styles';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import theme from './Theme.js';
 import { NutritionInfo } from './NutritionInfo';
 import { NutritionTotal } from './NutritionTotal';
 
 const styles = theme => ({
-  gridMain: {
+  "@global": {
+    body: {
+      backgroundColor: theme.palette.primary.light
+    }
+  },
+  header: {
     width: "100%",
-    textAlign: "center"
-  },
-  gridMainItem: {
+    textAlign: "center",
     padding: theme.spacing(1),
+    backgroundColor: theme.palette.primary.dark,
+    borderRadius: '0 0 10px 10px',
   },
-  gridBody: {
+  mainContent: {
     textAlign: 'center',
     display: 'flex',
     justify: 'space-between',
-    alignItems: 'center'
+    alignItems: 'center',
+    backgroundColor: theme.palette.primary.light,
   },
-  gridBodyItem: {
-    padding: theme.spacing(1)
-  }
 });
 
 class App extends Component {
@@ -87,7 +93,7 @@ class App extends Component {
         nutritionList.length !== 0       
         ) {
         nutritionList = this.state.nutritionList.map((item) =>
-        <Grid item key={item.nutritionInfo.food_name} className={classes.gridBodyItem} xs={12} md={4} lg={3} xl={3}>
+        <Grid item key={item.nutritionInfo.food_name} style={{display: 'flex', justifyContent: 'center'}}xs={12} md={4} lg={3} xl={3}>
           <NutritionInfo nutritionInfo={item.nutritionInfo} />
         </Grid>
         ).slice(1);
@@ -96,19 +102,22 @@ class App extends Component {
         return null;
       }
       return (
-        <Container>
-          <Grid container className={classes.gridMain}>
-              <Grid item className={classes.gridMainItem} xs={12}>
-                  <SearchBar onHandleInput={this.handleInput} onHandleReset={this.handleReset} />
-              </Grid>
-          </Grid>
-              <Grid container className={classes.gridBody} direction="row">
-                {nutritionList}
-              </Grid>
-              <Grid container className={classes.gridBody} direction="row">
-                <NutritionTotal nutritionTotal={this.state.nutritionList.slice(1)} />
-              </Grid>
-        </Container>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <Container>
+            <Grid container className={classes.header}>
+                <Grid item xs={12}>
+                    <SearchBar onHandleInput={this.handleInput} onHandleReset={this.handleReset} />
+                </Grid>
+            </Grid>
+                <Grid container className={classes.mainContent} direction="row">
+                  {nutritionList}
+                </Grid>
+                <Grid container className={classes.mainContent} direction="row">
+                  <NutritionTotal nutritionTotal={this.state.nutritionList.slice(1)} />
+                </Grid>
+          </Container>
+        </ThemeProvider>
       );
     }
 }

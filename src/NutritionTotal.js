@@ -2,28 +2,43 @@ import Grid from '@material-ui/core/Grid';
 import Chip from '@material-ui/core/Chip';
 import { makeStyles } from '@material-ui/core/styles';
 import { toTitleCase } from './App.js';
+import theme from './Theme.js';
 
 const useStyles = makeStyles((theme) => ({
-    gridTotalWindow: {
+    '@keyframes pop-up': {
+        "0%": {
+          "-webkit-transform": "rotateX(100deg)",
+                  "transform": "rotateX(100deg)",
+          "-webkit-transform-origin": "bottom",
+                  "transform-origin": "bottom",
+          opacity: 0,
+        },
+        "100%": {
+          "-webkit-transform": "rotateX(0)",
+                  "transform": "rotateX(0)",
+          "-webkit-transform-origin": "bottom",
+                  "transform-origin": "bottom",
+          opacity: 1,
+        }
+      },
+    totalCard: {
       minWidth: '280px',
       maxWidth: '280px',
       border: "2px solid black",
       paddingLeft: theme.spacing(1),
       paddingRight: theme.spacing(1),
+      backgroundColor: theme.palette.primary.light,
+      animation: "$pop-up 1s cubic-bezier(0.175, 0.885, 0.320, 1.275) both",
     },
-    gridTotalWindowItem: {
-      margin: "0 0 0 0",
-      padding: "0 0 0 0"
-    },
-    gridTotalWindowChip: {
+    chipContainer: {
       display: 'flex',
       justifyContent: 'space-between',
+      padding: theme.spacing(1),
     },
-    gridTotalWindowChipItem: {
-        minWidth: '100px',
-        alignContent: 'center',
-        textAlign: 'center',
-        margin: theme.spacing(1),
+    chipItem: {
+        backgroundColor: theme.palette.secondary.main,
+        color: theme.palette.primary.light,
+        margin: theme.spacing(.5),
     },
     paragraph: {
       textAlign: "left",
@@ -45,9 +60,8 @@ export function NutritionTotal(props) {
         totalCholesterol += item.nutritionInfo.nf_cholesterol
         totalCarbs += item.nutritionInfo.nf_total_carbohydrate;
         return (
-                <Grid item key={item.nutritionInfo.food_name} 
-                className={classes.gridTotalWindowChipItem} xs={4}>
-                    <Chip label={
+                <Grid item key={item.nutritionInfo.food_name} xs={6}>
+                    <Chip className={classes.chipItem} label={
                         toTitleCase(item.nutritionInfo.food_name) + '(' 
                         + item.nutritionInfo.serving_qty
                         + item.nutritionInfo.serving_unit + ')'
@@ -62,83 +76,83 @@ export function NutritionTotal(props) {
     else {
         return(
             <Grid container style={{display: 'flex', justifyContent: 'center'}}>
-                <Grid container className={classes.gridTotalWindow}>
-                    <Grid item className={classes.gridTotalWindowItem} xs={12}>
+                <Grid container className={classes.totalCard}>
+                    <Grid item  xs={12}>
                         <h1 style={{borderBottom: "1px solid black", margin: "0 0 0 0", fontSize: "30px"}}>
                             Total
                         </h1>
                     </Grid>
-                    <Grid container className={classes.gridTotalWindowChip} xs={12}>
+                    <Grid container className={classes.chipContainer} xs={12}>
                         {nutritionTotal}
                     </Grid>
-                    <Grid item className={classes.gridTotalWindowItem} xs={9}>
+                    <Grid item  xs={9}>
                         <p className={classes.paragraph}
                         style={{fontSize: "26px", fontWeight: "bold"}}>Calories</p>
                     </Grid>
-                    <Grid item className={classes.gridTotalWindowItem} xs={3}>
+                    <Grid item  xs={3}>
                         <p className={classes.paragraph}
                         style={{fontSize: "26px", fontWeight: "bold", textAlign: "right"}}>
                         {Math.round(totalCalories)}
                         </p>
                     </Grid>
-                    <Grid item className={classes.gridTotalWindowItem} xs={12} 
+                    <Grid item  xs={12} 
                     style={{border: "2px solid black", marginBottom: "2px"}}>
                     </Grid>
-                    <Grid item className={classes.gridTotalWindowItem} xs={12}>
+                    <Grid item  xs={12}>
                         <p className={classes.paragraph}
                         style={{fontSize: "12px", fontWeight: "bold",
                         textAlign: "right", borderBottom: "1px solid black"}}>% Daily Value*</p>
                     </Grid>
                     <Grid container style={{borderBottom: '1px solid black', fontSize: "12px"}} >
-                        <Grid item className={classes.gridTotalWindowItem} xs={6}>
+                        <Grid item  xs={6}>
                         <p className={classes.paragraph}><b>Total Fat </b> 
                         {' ' + Math.round(totalFat * 10)/10}g</p>
                         </Grid>
-                        <Grid item className={classes.gridTotalWindowItem} xs={6}>
+                        <Grid item  xs={6}>
                         <p className={classes.paragraph} style={{textAlign: 'right'}}>
                             {Math.round((totalFat / 78)*100) + '%' }
                         </p>
                         </Grid>
                     </Grid>    
                     <Grid container style={{borderBottom: '1px solid black', fontSize: "12px"}} >
-                        <Grid item className={classes.gridTotalWindowItem} xs={6}>
+                        <Grid item  xs={6}>
                         <p className={classes.paragraph}><b>Cholesterol</b>
                         {' ' + Math.round(totalCholesterol)}mg</p>
                         </Grid>
-                        <Grid item className={classes.gridTotalWindowItem} xs={6}>
+                        <Grid item  xs={6}>
                         <p className={classes.paragraph} style={{textAlign: 'right'}}>
                             {Math.round((totalCholesterol / 300)*100) + '%' }
                         </p>
                         </Grid>
                     </Grid>
                     <Grid container style={{borderBottom: '1px solid black', fontSize: "12px"}} >
-                        <Grid item className={classes.gridTotalWindowItem} xs={6}>
+                        <Grid item  xs={6}>
                         <p className={classes.paragraph}><b>Sodium</b>
                         {' ' + Math.round(totalSodium)}mg</p>
                         </Grid>
-                        <Grid item className={classes.gridTotalWindowItem} xs={6}>
+                        <Grid item  xs={6}>
                         <p className={classes.paragraph} style={{textAlign: 'right'}}>
                             {Math.round((totalSodium / 2300)*100) + '%' }
                         </p>
                         </Grid>
                     </Grid>
                     <Grid container style={{borderBottom: '1px solid black', fontSize: "12px"}} >
-                        <Grid item className={classes.gridTotalWindowItem} xs={9}>
+                        <Grid item  xs={9}>
                         <p className={classes.paragraph}><b>Total Carbohydrate</b>
                         {' ' + Math.round(totalCarbs)}g</p>
                         </Grid>
-                        <Grid item className={classes.gridTotalWindowItem} xs={3}>
+                        <Grid item  xs={3}>
                         <p className={classes.paragraph} style={{textAlign: 'right'}}>
                             {Math.round((totalCarbs / 275)*100) + '%' }
                         </p>
                         </Grid>
                     </Grid>
                     <Grid container style={{borderBottom: '1px solid black', fontSize: "12px"}} >
-                        <Grid item className={classes.gridTotalWindowItem} xs={9}>
+                        <Grid item  xs={9}>
                         <p className={classes.paragraph}><b>Protein</b>
                         {' ' + Math.round(totalProtein)}g</p>
                         </Grid>
-                        <Grid item className={classes.gridTotalWindowItem} xs={3}>
+                        <Grid item  xs={3}>
                         <p className={classes.paragraph} style={{textAlign: 'right'}}>
                             {Math.round((totalProtein / 50)*100) + '%' }
                         </p>

@@ -5,13 +5,27 @@ import RotateLeft from '@material-ui/icons/RotateLeft';
 import AddCircleOutline from '@material-ui/icons/AddCircleOutline';
 import IconButton from '@material-ui/core/IconButton';
 import { withStyles } from '@material-ui/core/styles';
+import theme from './Theme.js';
 
 const styles = theme => ({
     searchBar: {
       minWidth: "280px",
       maxWidth: "280px",
-      border: "1px solid black",
-      borderRadius: "5px",
+      color: theme.palette.secondary.main,
+      '&$barFocused $notchedOutline': {
+        borderColor: `${theme.palette.secondary.main} !important`,
+      }
+    },
+    icon: {
+      color: theme.palette.secondary.main,
+    },
+    barFocused: {},
+    notchedOutline: {
+      borderWidth: "1px",
+      borderColor: `${theme.palette.secondary.main} !important`,
+    },
+    barLabel: {
+      color: `${theme.palette.secondary.main} !important`
     }
   });
 
@@ -67,17 +81,31 @@ class SearchBar extends Component {
       return (
         <div>
           <form onSubmit={this.onSubmit} onReset={this.onReset}>
-            <TextField className={classes.searchBar} 
-                placeholder="Search" 
+            <TextField
                 value={this.state.inputValue}
                 onChange={this.onChange}
-                InputProps = {{ endAdornment: <Search />}}        
+                label="Search"
+                variant="outlined"
+                InputLabelProps ={{
+                  classes: {
+                    root: classes.barLabel,
+                    focused: classes.barFocused
+                  }
+                }}
+                InputProps = {{ 
+                  endAdornment: <Search className={classes.icon} />,
+                  classes: {
+                    root: classes.searchBar,
+                    focused: classes.barFocused,
+                    notchedOutline: classes.notchedOutline
+                  }
+                }}        
             />
             <IconButton aria-label="Add" type="submit">
-              <AddCircleOutline />
+              <AddCircleOutline className={classes.icon} />
             </IconButton>
             <IconButton aria-label="Reset" type="reset">
-              <RotateLeft />
+              <RotateLeft className={classes.icon} />
             </IconButton>
           </form>
         </div>
