@@ -2,14 +2,27 @@ import React, { Component } from 'react';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import SearchBar from './SearchBar.js';
+import { Intro } from './Intro.js'
+import { NutritionInfo } from './NutritionInfo.js';
+import { NutritionTotal } from './NutritionTotal.js';
 import { withStyles } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import theme from './Theme.js';
-import { NutritionInfo } from './NutritionInfo';
-import { NutritionTotal } from './NutritionTotal';
 
 const styles = theme => ({
+  '@keyframes slide-in-top': {
+    '0%': {
+      '-webkit-transform': 'translateY(-1000px)',
+              'transform': 'translateY(-1000px)',
+      opacity: 0,
+    },
+    '100%': {
+      '-webkit-transform': 'translateY(0)',
+              'transform': 'translateY(0)',
+      opacity: 1,
+    }
+  },  
   "@global": {
     body: {
       backgroundColor: theme.palette.primary.light
@@ -21,6 +34,7 @@ const styles = theme => ({
     padding: theme.spacing(1),
     backgroundColor: theme.palette.primary.dark,
     borderRadius: '0 0 10px 10px',
+    animation: '$slide-in-top 0.6s cubic-bezier(0.250, 0.460, 0.450, 0.940) both', 
   },
   mainContent: {
     textAlign: 'center',
@@ -39,7 +53,7 @@ class App extends Component {
     this.state = {
       input: '',
       nutritionList: [{
-        nutritionInfo: []
+        nutritionInfo: [],
       }]
     };
   }
@@ -87,11 +101,10 @@ class App extends Component {
 
     render() {
       const { classes } = this.props;
+      let renderList = false;
       let nutritionList = this.state.nutritionList;
-      if(
-        nutritionList !== undefined ||
-        nutritionList.length !== 0       
-        ) {
+      if(nutritionList.slice(1).length !== 0) {
+        renderList = true;
         nutritionList = this.state.nutritionList.map((item) =>
         <Grid item key={item.nutritionInfo.food_name} style={{display: 'flex', justifyContent: 'center'}}xs={12} md={4} lg={3} xl={3}>
           <NutritionInfo nutritionInfo={item.nutritionInfo} />
@@ -99,7 +112,7 @@ class App extends Component {
         ).slice(1);
       }
       else {
-        return null;
+        renderList = false;
       }
       return (
         <ThemeProvider theme={theme}>
@@ -111,7 +124,7 @@ class App extends Component {
                 </Grid>
             </Grid>
                 <Grid container className={classes.mainContent} direction="row">
-                  {nutritionList}
+                  {renderList ? nutritionList : <Intro />}
                 </Grid>
                 <Grid container className={classes.mainContent} direction="row">
                   <NutritionTotal nutritionTotal={this.state.nutritionList.slice(1)} />
