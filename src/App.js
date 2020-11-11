@@ -8,6 +8,9 @@ import { NutritionTotal } from './NutritionTotal.js';
 import { withStyles } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
+import Typography from '@material-ui/core/Typography';
+import bg from './bg.jpg';
+import logo from './logo.png';
 import theme from './Theme.js';
 
 const styles = theme => ({
@@ -22,18 +25,38 @@ const styles = theme => ({
               'transform': 'translateY(0)',
       opacity: 1,
     }
+  },
+  '@keyframes slide-in-bottom': {
+    '0%': {
+      '-webkit-transform': 'translateY(1000px)',
+              'transform': 'translateY(1000px)',
+      opacity: 0,
+    },
+    '100%': {
+      '-webkit-transform': 'translateY(0)',
+              'transform': 'translateY(0)',
+      opacity: 1,
+    }
   },  
   "@global": {
     body: {
-      backgroundColor: theme.palette.primary.light
+      backgroundImage: `url(${bg})`,
+      backgroundSize: 'cover',
     }
   },
+  mainContainer: {
+    spacing: 0,
+    marginBottom: '60px',
+  },
   header: {
-    width: "100%",
     textAlign: "center",
+    display: 'flex',
+    alignItems: 'center',
     padding: theme.spacing(1),
     backgroundColor: theme.palette.primary.dark,
     borderRadius: '0 0 10px 10px',
+    border: `2px solid ${theme.palette.primary.main}`,
+    borderStyle: 'none solid solid solid',
     animation: '$slide-in-top 0.6s cubic-bezier(0.250, 0.460, 0.450, 0.940) both', 
   },
   mainContent: {
@@ -41,8 +64,24 @@ const styles = theme => ({
     display: 'flex',
     justify: 'space-between',
     alignItems: 'center',
-    backgroundColor: theme.palette.primary.light,
   },
+  footerContainer: {
+    bottom: 0,
+    display: 'flex',
+    justify: 'center',
+    position: 'fixed',
+    animation: '$slide-in-bottom 0.6s cubic-bezier(0.250, 0.460, 0.450, 0.940) both', 
+    },
+    footer: {
+      textAlign: 'center',
+      fontSize: '10px',
+      border: `2px solid ${theme.palette.primary.dark}`,
+      borderStyle: 'solid solid none solid',
+      backgroundColor: theme.palette.primary.light,
+      marginLeft: theme.spacing(1),
+      marginRight: theme.spacing(1),
+      borderRadius: '10px 10px 0 0',
+    }
 });
 
 class App extends Component {
@@ -118,18 +157,34 @@ class App extends Component {
         <ThemeProvider theme={theme}>
           <CssBaseline />
           <Container>
-            <Grid container className={classes.header}>
-                <Grid item xs={12}>
-                    <SearchBar onHandleInput={this.handleInput} onHandleReset={this.handleReset} />
-                </Grid>
-            </Grid>
-                <Grid container className={classes.mainContent} direction="row">
+            <Grid container 
+            className={classes.mainContainer}
+            direction='column'
+            justify='flex-start'
+            >
+              <Grid container className={classes.header}>
+                  <Grid item xs={1}>
+                    <img src={logo} width="96px" height="60px" />       
+                  </Grid>
+                  <Grid item xs={11}>
+                      <SearchBar onHandleInput={this.handleInput} onHandleReset={this.handleReset} />
+                  </Grid>
+              </Grid>
+              <Grid container className={classes.mainContent} direction="row">
                   {renderList ? nutritionList : <Intro />}
-                </Grid>
-                <Grid container className={classes.mainContent} direction="row">
+              </Grid>
+              <Grid container className={classes.mainContent} direction="row">
                   <NutritionTotal nutritionTotal={this.state.nutritionList.slice(1)} />
-                </Grid>
+              </Grid>
+            </Grid>
           </Container>
+          <Grid container className={classes.footerContainer} xs={12}>
+            <Grid item className={classes.footer} xs={12}>
+            <Typography variant="p">
+                  Created by Malcom Calivar - App powered by Nutritionix API.
+            </Typography>
+            </Grid>
+          </Grid>
         </ThemeProvider>
       );
     }

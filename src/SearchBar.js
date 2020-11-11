@@ -11,8 +11,8 @@ const styles = theme => ({
     searchBar: {
       minWidth: "280px",
       maxWidth: "280px",
+      height: "45px",
       color: theme.palette.secondary.main,
-      animation: 'slide-in-top 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both',
       '&$barFocused $notchedOutline': {
         borderColor: `${theme.palette.secondary.main} !important`,
       }
