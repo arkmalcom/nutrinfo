@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
+import Hidden from '@material-ui/core/Hidden';
 import SearchBar from './SearchBar.js';
 import { Intro } from './Intro.js'
 import { NutritionInfo } from './NutritionInfo.js';
@@ -46,12 +47,13 @@ const styles = theme => ({
   },
   mainContainer: {
     spacing: 0,
-    marginBottom: '60px',
+    marginBottom: '18px',
+    minHeight: '100vh',
   },
   header: {
     textAlign: "center",
     display: 'flex',
-    alignItems: 'center',
+    justifyContent: 'center',
     padding: theme.spacing(1),
     backgroundColor: theme.palette.primary.dark,
     borderRadius: '0 0 10px 10px',
@@ -62,7 +64,7 @@ const styles = theme => ({
   mainContent: {
     textAlign: 'center',
     display: 'flex',
-    justify: 'space-between',
+    justifyContent: 'center',
     alignItems: 'center',
   },
   footerContainer: {
@@ -163,10 +165,12 @@ class App extends Component {
             justify='flex-start'
             >
               <Grid container className={classes.header}>
-                  <Grid item xs={1}>
+                <Hidden xsDown>
+                <Grid item md={1}>
                     <img src={logo} width="96px" height="60px" />       
                   </Grid>
-                  <Grid item xs={11}>
+                </Hidden>
+                  <Grid item xs={12} md={11}>
                       <SearchBar onHandleInput={this.handleInput} onHandleReset={this.handleReset} />
                   </Grid>
               </Grid>

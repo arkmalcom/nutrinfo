@@ -53,7 +53,7 @@ export function Intro() {
     const classes = useStyles();
     return (
         <Grid container className={classes.introContainer} xs={12}>
-            <Grid container className={classes.introCard} xs={6}>
+            <Grid container className={classes.introCard} xs={12} md={6}>
                 <Grid item className={classes.introHeader} xs={12} style={{
                     borderBottom: `4px solid ${theme.palette.secondary.dark}`
                 }}>
