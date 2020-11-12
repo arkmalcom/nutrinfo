@@ -167,7 +167,7 @@ class App extends Component {
               <Grid container className={classes.header}>
                 <Hidden xsDown>
                 <Grid item md={1}>
-                    <img src={logo} width="96px" height="60px" />       
+                    <img src={logo} width="72px" height="45px" />       
                   </Grid>
                 </Hidden>
                   <Grid item xs={12} md={11}>
@@ -184,7 +184,9 @@ class App extends Component {
           </Container>
           <Grid container className={classes.footerContainer} xs={12}>
             <Grid item className={classes.footer} xs={12}>
-            <Typography variant="p">
+            <Typography variant="p" style={{
+              color: theme.palette.secondary.main,
+            }}>
                   Created by Malcom Calivar - App powered by Nutritionix API.
             </Typography>
             </Grid>

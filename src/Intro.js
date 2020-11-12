@@ -55,7 +55,7 @@ export function Intro() {
         <Grid container className={classes.introContainer} xs={12}>
             <Grid container className={classes.introCard} xs={12} md={6}>
                 <Grid item className={classes.introHeader} xs={12} style={{
-                    borderBottom: `4px solid ${theme.palette.secondary.dark}`
+                    borderBottom: `4px solid ${theme.palette.secondary.main}`
                 }}>
                     <img src={logo} style={{
                     width: '192px',
@@ -66,7 +66,7 @@ export function Intro() {
                 direction="row" justify="flex-end" xs={12}>
                     <Grid item xs={12}>                        
                         <Typography variant="p" style={{
-                            color: theme.palette.secondary.dark,
+                            color: theme.palette.secondary.main,
                         }}>
                             This project utilizes a public API (<b>Nutritionix</b>) to fetch nutrient data and
                             display it in an easy-to-understand "nutrition facts" style label. 
